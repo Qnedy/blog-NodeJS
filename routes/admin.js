@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/categorias', (req, res) => {
-    Categoria.find().then((categorias) => {
+    Categoria.find().sort({date: 'desc'}).then((categorias) => {
         res.render('admin/categorias', {categorias: categorias});
     }).catch((err) => {
         req.flash('error_msg', "Não foi possível carregar a lista de categorias.");
@@ -56,6 +56,47 @@ router.post('/categorias/nova', (req, res) => {
         });
     }
 
+});
+
+router.get('/categorias/edit/:id', (req, res) => {
+    Categoria.findOne({_id:req.params.id}).then((categoria) => {
+        res.render('admin/editcategoria', {categoria: categoria});
+    }).catch((err) => {
+        req.flash('error_msg', "Essa categoria não existe.");
+        res.redirect('/admin/categorias');
+    });
+    
+});
+
+router.post('/categorias/edit', (req, res) => {
+    Categoria.findOne({_id:req.body.id}).then((categoria) => {
+        console.log(categoria);
+        categoria.nome = req.body.nome;
+        categoria.slug = req.body.slug;
+        console.log(categoria);
+
+        categoria.save().then(() => {
+            req.flash('success_msg', "Categoria editada com sucesso.");
+            res.redirect('/admin/categorias');
+
+        }).catch((err) => {
+            req.flash('error_msg', "Houve um erro ao editar a categoria.");
+            res.redirect('/admin/categorias');
+        });
+
+    }).catch((err) => {
+        req.flash('error_msg', "Houve um erro ao editar a categoria: " + err);
+    });
+});
+
+router.post('/categorias/deletar', (req, res) => {
+    Categoria.remove({_id: req.body.id}).then(() => {
+        req.flash('success_msg', "Categoria deletada com sucesso.");
+        res.redirect('/admin/categorias');
+    }).catch((err) => {
+        req.flash('error_msg', "Categoria não pôde ser deletada.");
+        res.redirect('/admin/categorias');
+    });
 });
 
 
