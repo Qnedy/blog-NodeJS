@@ -100,5 +100,22 @@ router.post('/categorias/deletar', (req, res) => {
 });
 
 
+//Rotas de postagem
+router.get('/postagens', (req, res) => {
+    res.render('admin/postagens');
+});
+
+router.get('/postagens/add', (req, res) => {
+    Categoria.find().then((categorias) => {
+        res.render('admin/addpostagens', {categorias: categorias});
+
+    }).catch((err) => {
+        req.flash('erros_msg', "Houve um erro ao carregar o formulário: " + err);
+        res.redirect('/admin');
+    });
+});
+
+
+
 
 module.exports = router;
