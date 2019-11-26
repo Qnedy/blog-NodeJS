@@ -192,4 +192,11 @@ router.post('/postagens/edit', (req, res) => {
     });
 });
 
+//delete com GET so pra ver que da pra fazer mas não é tão seguro quanto com POST
+router.get('/postagens/deletar/:id', (req, res) => {
+    Postagem.remove({_id: req.params.id}).then(() => {
+        res.redirect('/admin/postagens');
+    });
+});
+
 module.exports = router;
