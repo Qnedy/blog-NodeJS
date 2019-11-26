@@ -11,7 +11,7 @@ const Postagem = new Schema({
         type: String,
         required: true
     },
-    descrição: {
+    descricao: {
         type: String,
         required: true
     },
