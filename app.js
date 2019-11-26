@@ -10,6 +10,10 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const flash = require('connect-flash');
 
+require('./models/Postagem');
+const Postagem = mongoose.model('postagens');
+
+
 //Configurações
 
     //Session
@@ -53,6 +57,16 @@ const flash = require('connect-flash');
             next();
         });
 //Rotas
+app.get('/', (req, res) => {
+    Postagem.find().populate('categoria').sort({date: 'desc'}).then((postagens) => {
+        res.render('index', {postagens: postagens});
+
+    }).catch((err) => {
+        req.flash('error_msg', "Não foi possível carregar a lista de postagens:" + err);
+        res.redirect('/admin');
+    });
+})
+
 app.use('/admin', admin);
 
 //Outros
