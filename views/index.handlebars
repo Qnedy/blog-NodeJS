@@ -13,12 +13,11 @@
     <div class="card mt-4">
         <div class="card-body">
             <h4>{{titulo}}</h4>
-            <small>Slug: {{slug}}</small><br>
-            <small>Descrição: {{descricao}}</small><br>
-            <small>Conteúdo: {{conteudo}}</small><br>
-            <small>Categoria: {{categoria.nome}}</small> <Br>
-            <a href="/admin/postagens/edit/{{_id}}"><button class="btn btn-success mt-2">Editar postagem</button></a>
-            <a href="/admin/postagens/deletar/{{_id}}"><button class="btn btn-danger mt-2">Deletar postagem</button></a>
+            <small>{{descricao}}</small><br>
+            <a href="/postagem/{{slug}}"><button class="btn btn-success mt-4">Leia mais</button></a>
+            <hr>
+            <small>{{categoria.nome}}</small><br>
+            <small>{{data}}</small>
         </div>
     </div>
 

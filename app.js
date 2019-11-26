@@ -67,6 +67,17 @@ app.get('/', (req, res) => {
     });
 })
 
+app.get('/postagem/:slug', (req, res) => {
+    Postagem.findOne({slug: req.params.slug}).then((postagem) => {
+        if(postagem){
+            res.render('postagem/index', {postagem: postagem});
+        }else{
+            req.flash('erros_msg', "Essa postagem não existe.");
+            res.redirect('/');
+        }
+    });
+});
+
 app.use('/admin', admin);
 
 //Outros
