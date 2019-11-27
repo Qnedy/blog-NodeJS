@@ -13,6 +13,9 @@ const flash = require('connect-flash');
 require('./models/Postagem');
 const Postagem = mongoose.model('postagens');
 
+require('./models/Categoria');
+const Categoria = mongoose.model('categorias');
+
 
 //Configurações
 
@@ -65,7 +68,35 @@ app.get('/', (req, res) => {
         req.flash('error_msg', "Não foi possível carregar a lista de postagens:" + err);
         res.redirect('/admin');
     });
-})
+});
+
+app.get('/categorias/list', (req, res) => {
+    Categoria.find().sort({date: 'desc'}).then((categorias) => {
+        res.render('categoria/index', {categorias: categorias});
+    }).catch((err) => {
+        req.flash('error_msg', "Não foi possível carregar a lista de categorias:" + err);
+        res.redirect('/');
+    });
+});
+
+app.get('/categorias/:slug', (req, res) => {
+    Categoria.findOne({slug: req.params.slug}).then((categoria) => {
+        if(categoria){
+            Postagem.find({categoria: categoria._id}).then((postagens) => {
+                res.render('categoria/postagens', {postagens: postagens, categoria: categoria});
+            }).catch((err) => {
+                req.flash('error_msg', "Houve um erro ao listar as postagens: " + err);
+                res.redirect('/');
+            });
+        }else{
+            req.flash('error_msg', "Categoria não encontrada.");
+            res.redirect('/');
+        }
+    }).catch((err) => {
+        req.flash('error_msg', "Categoria não encontrada: " + err);
+        res.redirect('/');
+    });
+});
 
 app.get('/postagem/:slug', (req, res) => {
     Postagem.findOne({slug: req.params.slug}).then((postagem) => {
