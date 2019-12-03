@@ -11,7 +11,7 @@ const Usuario = mongoose.model('usuarios');
 
 
 router.get('/cadastro', (req, res) => {
-    res.render('user/cadastro');;
+    res.render('user/cadastro');
 });
 
 router.post('/cadastro/novo', (req, res) => {
@@ -81,6 +81,10 @@ router.post('/cadastro/novo', (req, res) => {
         
     };
     
+});
+
+router.get('/login', (req, res) => {
+    res.render('user/login');
 });
 
 module.exports = router;
