@@ -10,6 +10,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+require('./config/auth')(passport);
 
 require('./models/Postagem');
 const Postagem = mongoose.model('postagens');
@@ -27,6 +29,9 @@ const Categoria = mongoose.model('categorias');
             resave: true,
             saveUninitialized: true
         }));
+
+        app.use(passport.initialize());
+        app.use(passport.session());
 
         app.use(flash());
 
