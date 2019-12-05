@@ -8,7 +8,7 @@ require('../models/Usuario');
 
 const Usuario = mongoose.model('usuarios');
 
-
+const passport = require('passport');
 
 router.get('/cadastro', (req, res) => {
     res.render('user/cadastro');
@@ -85,6 +85,14 @@ router.post('/cadastro/novo', (req, res) => {
 
 router.get('/login', (req, res) => {
     res.render('user/login');
+});
+
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/user/login',
+        failureFlash: true
+    })(req, res, next);
 });
 
 module.exports = router;
