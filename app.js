@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
+const db = require('./config/db');
 require('./config/auth')(passport);
 
 require('./models/Postagem');
@@ -54,7 +55,7 @@ const Categoria = mongoose.model('categorias');
 
     //Mongoose
         mongoose.Promise = global.Promise;
-        mongoose.connect('mongodb://localhost/blogapp').then(() => {
+        mongoose.connect(db.mongoURI).then(() => {
             console.log("Conectado ao mongo.");
         }).catch((err) => {
             console.log("Erro ao se conectar ao mongo: " + err);
@@ -123,7 +124,7 @@ app.use('/admin', admin);
 app.use('/user', user);
 
 //Outros
-const PORT = 8082;
+const PORT = process.env.PORT || 8082;
 
 app.listen(PORT, () => {
     console.log("Servidor rodando...")
